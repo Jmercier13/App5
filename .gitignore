@@ -47,6 +47,7 @@ Temporary Items
 .apdisk
 
 #VS2015
+TestCarte/.vs
 TestCarte/x64
 TestCarte/TestCarte/x64
 TestCarte/TestCarte/GeneratedFiles
