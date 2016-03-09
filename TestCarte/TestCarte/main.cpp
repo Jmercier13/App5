@@ -18,10 +18,7 @@ int main(int argc, char *argv[])
 	l.add(c);
 
 	qDebug() << l << " asdf" << endl;
-
-
-
-
+	
 	//cout << l;
 
 
