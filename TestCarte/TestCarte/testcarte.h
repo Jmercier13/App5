@@ -1,19 +1,16 @@
-#ifndef TESTCARTE_H
-#define TESTCARTE_H
+#pragma once
 
-#include <QtWidgets/QMainWindow>
-#include "ui_testcarte.h"
+#include <string>
 
-class TestCarte : public QMainWindow
-{
-	Q_OBJECT
+#include "VisiTest.h"
 
-public:
-	TestCarte(QWidget *parent = 0);
-	~TestCarte();
+using namespace std;
 
-private:
-	Ui::TestCarteClass ui;
+class TestCarte : public VisiTest{
+	public:
+		TestCarte(string title);
+		~TestCarte();
+
+	private:
 };
 
-#endif // TESTCARTE_H

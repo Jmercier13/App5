@@ -1,9 +1,7 @@
 #include "testcarte.h"
 
-TestCarte::TestCarte(QWidget *parent)
-	: QMainWindow(parent)
-{
-	ui.setupUi(this);
+TestCarte::TestCarte(string title) : VisiTest(title.c_str()) {
+
 }
 
 TestCarte::~TestCarte()

@@ -46,8 +46,8 @@ Network Trash Folder
 Temporary Items
 .apdisk
 
-#VS2015
+#VS
 TestCarte/.vs
-TestCarte/x64
-TestCarte/TestCarte/x64
+TestCarte/Win32
 TestCarte/TestCarte/GeneratedFiles
+TestCarte/TestCarte/Debug
