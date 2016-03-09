@@ -1,12 +1,24 @@
 #include <QtWidgets/QApplication>
+#include <QDebug>
+
+
 #include "testcarte.h"
 
-//#include "list.h"
+#include "list.h"
 
 int main(int argc, char *argv[])
 {
-	//List<int> l = List<int>();
-	//l.add(0);
+	string aa = "0";
+	string b = "1";
+	string c = "2";
+
+	List<string> l = List<string>();
+	l.add(aa);
+	l.add(b);
+	l.add(c);
+
+	qDebug() << l << " asdf" << endl;
+	//cout << l;
 
 
 	QApplication a(argc, argv);
