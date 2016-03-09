@@ -17,6 +17,7 @@ class TestCarte : public VisiTest{
 		List<DonneesTest> _archive;
 
 		ArchiveState _archive_state = Stop;
+		int _index = 0;
 	public:
 		TestCarte(string title);
 		~TestCarte();
@@ -28,5 +29,12 @@ class TestCarte : public VisiTest{
 		void sauvegarder(char *file_name);
 		void modeFile();
 		void modePile();
+
+		void testSuivant();
+		
+		void premier();
+		void dernier();
+		void precedent();
+		void suivant();
 };
 
