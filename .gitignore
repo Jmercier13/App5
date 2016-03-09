@@ -244,3 +244,5 @@ paket-files/
 .idea/
 *.sln.iml
 TestCarte/TestCarte/testcarte.qrc
+*.sdf
+*.suo
