@@ -51,3 +51,5 @@ TestCarte/.vs
 TestCarte/Win32
 TestCarte/TestCarte/GeneratedFiles
 TestCarte/TestCarte/Debug
+*.suo
+*.sdf

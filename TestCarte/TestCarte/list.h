@@ -10,34 +10,34 @@
 #include <iostream>
 #include <iomanip>
 #include <sstream>
+#include <QDebug>
 
 using namespace std;
 
+template <class T>
 class ListItem {
-	friend class List;
-	private:
-	// public:
-		ListItem *_back;
-		ListItem *_front;
-		
-		void *_obj;
 	public:
+		ListItem<T> *_back;
+		ListItem<T> *_front;
+		
+		T &_obj;
+
 		ListItem();
-		ListItem(ListItem *back, ListItem *front, void *obj);
+		ListItem(ListItem<T> *back, ListItem<T> *front, T &obj);
 		~ListItem();
-		void* getObj();
+		T& getObj();
 };
 
 template <class T>
 class List {
 	private:
 	// public:
-		ListItem *_first;
-		ListItem *_last;
+		ListItem<T> *_first;
+		ListItem<T> *_last;
 		
 		int _len;
 		
-		ListItem* _getItem(int index);
+		ListItem<T>* _getItem(int index);
 	
 	public:
 		List();
@@ -45,23 +45,43 @@ class List {
 		
 		int length();
 		
-		ListItem* begin();
-		ListItem* end();
+		ListItem<T>* begin();
+		ListItem<T>* end();
 		
-		T* getObj(int index);
+		T& getObj(int index);
 		
-		void add(T *obj, int index=-1);
-		void pushLast(void *obj);
-		void pushFirst(void *obj);
+		void add(T &obj, int index=-1);
+		void pushLast(T &obj);
+		void pushFirst(T &obj);
 		
 		void empty();
 		
 		void remove(int index=-1);
 		void removeLast();
 		void removeFirst();
+
+		List<T>& operator+=(T &elem);
 		
 		string toString();
 };
+
+template <class T>
+ostream& operator<<(ostream &out, List<T> &l){
+	out << l.toString().c_str();
+	return out;
+}; 
+
+template <class T>
+QDebug& operator<<(QDebug &out, List<T> &l){
+	out << l.toString().c_str();
+	return out;
+};
+
+template <class T>
+List<T>& List<T>::operator+=(T &elem){
+	add(elem);
+	return *this;
+}
 
 template <class T>
 List<T>::List(){
@@ -81,17 +101,17 @@ int List<T>::length(){
 }
 
 template <class T>
-ListItem* List<T>::begin(){
+ListItem<T>* List<T>::begin(){
 	return _first;
 }
 
 template <class T>
-ListItem* List<T>::end(){
+ListItem<T>* List<T>::end(){
 	return _last;
 }
 
 template <class T>
-ListItem* List<T>::_getItem(int index){
+ListItem<T>* List<T>::_getItem(int index){
 	if (index < 0){
 		index = _len + index;
 	}
@@ -101,7 +121,7 @@ ListItem* List<T>::_getItem(int index){
 		cout << "ERROR _getItem index out of range" << endl;
 	}
 
-	ListItem *l;
+	ListItem<T> *l;
 
 	if (index == 0){
 		l = _first;
@@ -120,12 +140,12 @@ ListItem* List<T>::_getItem(int index){
 }
 
 template <class T>
-T* List<T>::getObj(int index){
-	return (T *)_getItem(index)->getObj();
+T& List<T>::getObj(int index){
+	return _getItem(index)->getObj();
 }
 
 template <class T>
-void List<T>::add(void *obj, int index){
+void List<T>::add(T &obj, int index){
 	if (index < 0){
 		index = (_len + 1) + index;
 	}
@@ -140,29 +160,29 @@ void List<T>::add(void *obj, int index){
 	}
 	else {
 		//if its not first or last
-		ListItem *f = _getItem(index);
-		ListItem *b = f->_back;
+		ListItem<T> *f = _getItem(index);
+		ListItem<T> *b = f->_back;
 
-		ListItem *newL = new ListItem(b, f, obj);
-		b->_front = newL;
-		f->_back = newL;
+		ListItem<T> *new_list = new ListItem<T>(b, f, obj);
+		b->_front = new_list;
+		f->_back = new_list;
 
 		_len++;
 	}
 }
 
 template <class T>
-void List<T>::pushFirst(void *obj){
+void List<T>::pushFirst(T &obj){
 	if (_first == NULL){
 		//if there is no first
-		_first = new ListItem(NULL, NULL, obj);
+		_first = new ListItem<T>(NULL, NULL, obj);
 		_last = _first;
 	}
 	else {
 		//if there is a first
-		ListItem *newL = new ListItem(NULL, _first, obj);
-		_first->_back = newL;
-		_first = newL;
+		ListItem<T> *new_list = new ListItem<T>(NULL, _first, obj);
+		_first->_back = new_list;
+		_first = new_list;
 
 		// cout << "fi b f" << _first << " " << _first->_back << " " << _first->_front << endl;
 		// cout << "la b f" << _last << " " << _last->_back << " " << _last->_front << endl;
@@ -172,14 +192,14 @@ void List<T>::pushFirst(void *obj){
 }
 
 template <class T>
-void List<T>::pushLast(void *obj){
+void List<T>::pushLast(T &obj){
 	if (_first == NULL){
 		pushFirst(obj);
 	}
 	else {
-		ListItem *newL = new ListItem(_last, NULL, obj);
-		_last->_front = newL;
-		_last = newL;
+		ListItem<T> *new_list = new ListItem<T>(_last, NULL, obj);
+		_last->_front = new_list;
+		_last = new_list;
 
 		_len++;
 	}
@@ -211,9 +231,9 @@ void List<T>::remove(int index){
 		removeLast();
 	}
 	else {
-		ListItem *r = _getItem(index);
-		ListItem *b = r->_back;
-		ListItem *f = r->_front;
+		ListItem<T> *r = _getItem(index);
+		ListItem<T> *b = r->_back;
+		ListItem<T> *f = r->_front;
 
 		b->_front = f;
 		f->_back = b;
@@ -235,7 +255,7 @@ void List<T>::removeLast(){
 		_last = NULL;
 	}
 	else {
-		ListItem *b = _last->_back;
+		ListItem<T> *b = _last->_back;
 
 		b->_front = NULL;
 		delete _last;
@@ -257,7 +277,7 @@ void List<T>::removeFirst(){
 		_last = NULL;
 	}
 	else {
-		ListItem *f = _first->_front;
+		ListItem<T> *f = _first->_front;
 
 		f->_back = NULL;
 		delete _first;
@@ -269,39 +289,33 @@ void List<T>::removeFirst(){
 
 template <class T>
 string List<T>::toString(){
-	int TAB_LEN = 3;
 	stringstream ss;
 
-	stringstream row_1;
-	stringstream row_2;
-
 	for (int i = 0; i<_len; i++){
-		PlatChoisi *p = getObj(i);
-		row_1 << '|' << setw(TAB_LEN) << i;
-		row_2 << '|' << setw(TAB_LEN) << p->getnb();
+		T obj = getObj(i);
+		ss << "| " << obj << " ";
 	}
 
-	ss << row_1.str() << '|' << endl;
-	ss << sep('-', ((TAB_LEN + 1) * _len) + 1) << endl;
-	ss << row_2.str() << '|';
+	ss << "|";
 
-	return ss.str();
+	return ss.str(); 
 }
 
-
-ListItem::ListItem(){
+template <class T>
+ListItem<T>::ListItem(){
 	_back = NULL;
 	_front = NULL;
 	_obj = NULL;
 }
 
-ListItem::ListItem(ListItem *back, ListItem *front, void *obj){
+template <class T>
+ListItem<T>::ListItem(ListItem<T> *back, ListItem<T> *front, T &obj) : _obj(obj){
 	_back = back;
 	_front = front;
-	_obj = obj;
 }
 
-ListItem::~ListItem(){
+template <class T>
+ListItem<T>::~ListItem(){
 	//maybe some memory leak
 
 	_back = NULL;
@@ -310,6 +324,7 @@ ListItem::~ListItem(){
 	// delete _obj;
 }
 
-void* ListItem::getObj(){
+template <class T>
+T& ListItem<T>::getObj(){
 	return _obj;
 }
