@@ -298,7 +298,7 @@ string List<T>::toString(){
 
 	ss << "|";
 
-	return ss.str();
+	return ss.str(); 
 }
 
 template <class T>
