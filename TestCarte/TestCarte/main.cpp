@@ -20,6 +20,8 @@ int main(int argc, char *argv[])
 	qDebug() << l << " asdf" << endl;
 
 
+
+
 	//cout << l;
 
 
