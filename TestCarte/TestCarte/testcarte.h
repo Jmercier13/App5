@@ -2,7 +2,7 @@
 
 #include <string>
 #include <iostream>
-
+#include <fstream>
 #include "VisiTest.h"
 #include "list.h"
 
@@ -25,6 +25,7 @@ class TestCarte : public VisiTest{
 		void demarrer();
 		void aretter();
 		void vider();
+		void write(ofstream &os, int i);
 
 		void sauvegarder(char *file_name);
 		void modeFile();
